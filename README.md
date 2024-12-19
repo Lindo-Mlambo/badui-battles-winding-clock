@@ -1,2 +1,2 @@
-# badui-battles-winding-clock
+# BadUI Battles Manually Winded Clock
 BadUI Battles inspired manually winded clock
