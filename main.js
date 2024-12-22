@@ -14,8 +14,8 @@ window.onload = () => {
     }
 
     const pointerCoords = {
-      x: normalize(evt.clientX, 0, window.innerWidth, -60, 60),
-      y: normalize(evt.clientY, 0, window.innerHeight, -60, 60),
+      x: normalize(evt.clientX, 0, window.innerWidth, -radius, radius),
+      y: normalize(evt.clientY, 0, window.innerHeight, -radius, radius),
     };
 
     const angle = getAngle(pointerCoords);
@@ -26,8 +26,8 @@ window.onload = () => {
     minuteHand.style.translate = `${tx}px ${ty}px`;
 
     const isMovingClockwise = isClockwise(
-      normalize(prevAngle, -Math.PI, Math.PI, 0, 2 * Math.PI),
-      normalize(angle, -Math.PI, Math.PI, 0, 2 * Math.PI),
+      normalizeAngle(prevAngle),
+      normalizeAngle(angle),
       wasMovingClockwise
     );
 
@@ -57,10 +57,14 @@ const isClockwise = (prevAngle, currAngle, prevDirection) => {
   return (diff > 0 && diff <= Math.PI) || diff < -Math.PI;
 };
 
-const normalize = (value, min, max, targetMin, targetMax) => {
+const normalizeAngle = (angle) => {
+  return normalize(angle, -Math.PI, Math.PI, 0, 2 * Math.PI);
+};
+
+function normalize(value, min, max, targetMin, targetMax) {
   if (min === max) {
     throw "Minimum value cannot equal maximum value";
   }
 
   return ((value - min) / (max - min)) * (targetMax - targetMin) + targetMin;
-};
+}
