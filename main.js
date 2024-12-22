@@ -3,7 +3,8 @@ window.onload = () => {
   console.log("ready...");
 
   const radius = 60;
-  let prevCoords = { x: 0, y: 60 };
+  let prevAngle = -0.5 * Math.PI;
+  let wasMovingClockwise = true;
 
   const minuteHand = $("div.minute-hand");
 
@@ -13,8 +14,8 @@ window.onload = () => {
     }
 
     const pointerCoords = {
-      x: normalize(evt.clientX, window.innerWidth, 0),
-      y: normalize(evt.clientY, window.innerHeight, 0),
+      x: normalize(evt.clientX, 0, window.innerWidth, -60, 60),
+      y: normalize(evt.clientY, 0, window.innerHeight, -60, 60),
     };
 
     const angle = getAngle(pointerCoords);
@@ -24,7 +25,14 @@ window.onload = () => {
 
     minuteHand.style.translate = `${tx}px ${ty}px`;
 
-    prevCoords = pointerCoords;
+    const isMovingClockwise = isClockwise(
+      normalize(prevAngle, -Math.PI, Math.PI, 0, 2 * Math.PI),
+      normalize(angle, -Math.PI, Math.PI, 0, 2 * Math.PI),
+      wasMovingClockwise
+    );
+
+    prevAngle = angle;
+    wasMovingClockwise = isMovingClockwise;
   };
 };
 
@@ -39,24 +47,20 @@ const getNewYCoord = (radius, angle) => {
   return radius * Math.sin(angle);
 };
 
-const isClockwiseRevolution = (curr, prev) => {
-  const isAtOclock = isInRange(curr.x, -32, 0) && isInRange(curr.y, 28, 60);
-  const isClockwise = curr.x > prev.x && curr.y > prev.y;
+const isClockwise = (prevAngle, currAngle, prevDirection) => {
+  if (prevAngle === currAngle) {
+    return prevDirection;
+  }
 
-  return isAtOclock && isClockwise;
+  const diff = currAngle - prevAngle;
+
+  return (diff > 0 && diff <= Math.PI) || diff < -Math.PI;
 };
 
-const isInRange = (value, max, min) => {
-  return value > min && value < max;
-};
-
-const normalize = (value, max, min) => {
+const normalize = (value, min, max, targetMin, targetMax) => {
   if (min === max) {
     throw "Minimum value cannot equal maximum value";
   }
-
-  const targetMin = -60;
-  const targetMax = 60;
 
   return ((value - min) / (max - min)) * (targetMax - targetMin) + targetMin;
 };
