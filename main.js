@@ -23,6 +23,11 @@ window.onload = () => {
     resetBtn.classList.remove("hidden");
 
     timerInterval = setInterval(() => {
+      if (minuteCount === 0) {
+        resetBtn.click();
+        return;
+      }
+
       if (secondCount === 0 && minuteCount > 0) {
         if (minuteCount % 60 === 0) {
           hourCount--;
