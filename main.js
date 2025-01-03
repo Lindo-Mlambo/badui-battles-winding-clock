@@ -19,15 +19,13 @@ window.onload = () => {
   const resetBtn = $("button.reset-timer");
 
   startBtn.onclick = () => {
+    if (minuteCount === 0) {
+      return;
+    }
     startBtn.classList.add("hidden");
     resetBtn.classList.remove("hidden");
 
     timerInterval = setInterval(() => {
-      if (minuteCount === 0) {
-        resetBtn.click();
-        return;
-      }
-
       if (secondCount === 0 && minuteCount > 0) {
         if (minuteCount % 60 === 0) {
           hourCount--;
@@ -56,7 +54,7 @@ window.onload = () => {
     secondCount = 0;
     hoursDisplay.innerHTML = String(hourCount).padStart(2, "0");
     minutesDisplay.innerHTML = String(minuteCount).padStart(2, "0");
-    hoursDisplay.innerHTML = String(hourCount).padStart(2, "0");
+    secondsDisplay.innerHTML = String(secondCount).padStart(2, "0");
   };
 
   minuteHand.ondrag = (evt) => {
