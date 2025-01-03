@@ -45,17 +45,25 @@ window.onload = () => {
       isMovingClockwise
     );
 
-    if (checkpointTracker === 4) {
-      minutesCount++;
-      checkpointTracker = 0;
-      prevAngle = 0;
-    }
-    if (checkpointTracker === -4) {
-      if (minutesCount > 0) {
-        minutesCount--;
+    // console.log("Angle: ", angle * (Math.PI / 180));
+
+    if (checkpointTracker >= 4) {
+      if (
+        normalizeAngle(prevAngle) <= Math.PI / 2 &&
+        normalizeAngle(angle) > Math.PI / 2
+      ) {
+        minutesCount++;
+        checkpointTracker = 0;
       }
-      checkpointTracker = 1;
-      prevAngle = 0;
+    }
+    if (checkpointTracker <= -4) {
+      if (
+        normalizeAngle(prevAngle) >= Math.PI / 2 &&
+        normalizeAngle(angle) < Math.PI / 2
+      ) {
+        minutesCount = minutesCount > 0 ? minutesCount - 1 : 0;
+        checkpointTracker = 0;
+      }
     }
 
     minutesDisplay.innerHTML = String(minutesCount).padStart(2, "0");
