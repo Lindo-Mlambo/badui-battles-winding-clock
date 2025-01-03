@@ -23,7 +23,6 @@ main {
 }
 
 div.container {
-  border: 1px solid #ccc;
   border-radius: 4px;
   padding: 1em;
 }
@@ -74,4 +73,41 @@ div.controls button {
 }
 div.controls button.hidden {
   display: none;
+}
+
+div.signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: .85em;
+  color: rgba(0, 0, 0, .7);
+  font-style: italic;
+  gap: .5em;
+}
+
+div.signature a {
+  text-decoration: none;
+  color: #fff;
+  padding: .1em .4em;
+  border-radius: .2em;
+  opacity: 1;
+  transition: opacity .15s ease-in;
+  font-style: normal;
+  font-size: .9em;
+}
+
+div.signature a:hover {
+  opacity: .8;
+}
+
+.fa-heart {
+  color: #f92672;
+}
+
+#source-code-link {
+  background-color: #444;
+}
+
+#reddit-link {
+  background-color: #ff4500;
 }
