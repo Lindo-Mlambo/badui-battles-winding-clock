@@ -46,14 +46,6 @@ div.minute-hand {
   left: calc(var(--bezel-diameter)/2 - 8px);
   translate: 0px calc(-1 * var(--bezel-diameter)/2);
 }
-div.direction {
-  width: 200px;
-  text-align: center;
-  margin: 1em 0 0 0;
-  padding: .5em;
-  font-weight: bold;
-  color: #222;
-}
 
 div.timer {
   height: 100%;
@@ -72,4 +64,14 @@ div.timer > span {
   display: flex;
   align-items: center;
   padding: .2em;
+}
+
+div.controls button {
+  padding: .8em 1em;
+  border: none;
+  border-radius: 4px;
+  width: 100px;
+}
+div.controls button.hidden {
+  display: none;
 }

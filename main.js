@@ -6,15 +6,53 @@ window.onload = () => {
   let prevAngle = -0.5 * Math.PI;
   let wasMovingClockwise = true;
   let checkpointTracker = 0;
-  let minutesCount = 0;
   let hourCount = 0;
+  let minuteCount = 0;
+  let secondCount = 0;
+  let timerInterval;
 
   const minuteHand = $("div.minute-hand");
   const hoursDisplay = $("span.hours");
   const minutesDisplay = $("span.minutes");
   const secondsDisplay = $("span.seconds");
+  const startBtn = $("button.start-timer");
+  const resetBtn = $("button.reset-timer");
 
-  minutesDisplay.innerHTML = String(minutesCount).padStart(2, "0");
+  startBtn.onclick = () => {
+    startBtn.classList.add("hidden");
+    resetBtn.classList.remove("hidden");
+
+    timerInterval = setInterval(() => {
+      if (secondCount === 0 && minuteCount > 0) {
+        if (minuteCount % 60 === 0) {
+          hourCount--;
+          hoursDisplayDisplay.innerHTML = String(hourCount).padStart(2, "0");
+        }
+        minuteCount--;
+        secondCount = 59;
+        minutesDisplay.innerHTML = String(minuteCount % 60).padStart(2, "0");
+      } else if (secondCount === 0 && minuteCount === 0) {
+        secondsDisplay.innerHTML = String(secondCount).padStart(2, "0");
+        console.log("Ring the alarm");
+        resetBtn.click();
+      }
+      secondsDisplay.innerHTML = String(secondCount).padStart(2, "0");
+
+      secondCount--;
+    }, 1000);
+  };
+
+  resetBtn.onclick = () => {
+    clearInterval(timerInterval);
+    resetBtn.classList.add("hidden");
+    startBtn.classList.remove("hidden");
+    hourCount = 0;
+    minuteCount = 0;
+    secondCount = 0;
+    hoursDisplay.innerHTML = String(hourCount).padStart(2, "0");
+    minutesDisplay.innerHTML = String(minuteCount).padStart(2, "0");
+    hoursDisplay.innerHTML = String(hourCount).padStart(2, "0");
+  };
 
   minuteHand.ondrag = (evt) => {
     if (evt.clientX === 0 && evt.clientY === 0) {
@@ -45,14 +83,15 @@ window.onload = () => {
       isMovingClockwise
     );
 
-    // console.log("Angle: ", angle * (Math.PI / 180));
-
     if (checkpointTracker >= 4) {
       if (
         normalizeAngle(prevAngle) <= Math.PI / 2 &&
         normalizeAngle(angle) > Math.PI / 2
       ) {
-        minutesCount++;
+        if (minuteCount % 60 === 59) {
+          hourCount++;
+        }
+        minuteCount++;
         checkpointTracker = 0;
       }
     }
@@ -61,23 +100,19 @@ window.onload = () => {
         normalizeAngle(prevAngle) >= Math.PI / 2 &&
         normalizeAngle(angle) < Math.PI / 2
       ) {
-        minutesCount = minutesCount > 0 ? minutesCount - 1 : 0;
+        if (minuteCount % 60 === 0 && hourCount > 0) {
+          hourCount--;
+        }
+        minuteCount = minuteCount > 0 ? minuteCount - 1 : 0;
         checkpointTracker = 0;
       }
     }
 
-    minutesDisplay.innerHTML = String(minutesCount).padStart(2, "0");
-
-    $(".direction").innerHTML = isMovingClockwise
-      ? "Clockwise"
-      : "Counter-clockwise";
+    hoursDisplay.innerHTML = String(hourCount).padStart(2, "0");
+    minutesDisplay.innerHTML = String(minuteCount % 60).padStart(2, "0");
 
     prevAngle = angle;
     wasMovingClockwise = isMovingClockwise;
-  };
-
-  minuteHand.ondragend = () => {
-    $(".direction").innerHTML = "No Movement";
   };
 };
 
