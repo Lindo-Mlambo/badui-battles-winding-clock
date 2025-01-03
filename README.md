@@ -6,7 +6,7 @@ You can view and interact with the UI here: [Manually winded clock](https://lind
 ### Challenges:
 
 - Clockwise/counter-clockwise movement tracking. I use the arctan function to calculate the angle between the initial point and the position of the cursor: `arctan(x, y)`. The problem: The circle was divided into two halves of the range `[0, Math.PI]` and `[-Math.PI, 0]`. The normalizeAngle method helped greatly handing this as I wanted my angles to go from 0 to `2 * Math.PI`.
-- On mobile, you have to double tap and and hold the red circle to drag it. Not very straight forward. - I could make the dot bigger 🤷‍♂️. I am tired now.
+- On mobile, you have to tap and hold the red circle to drag it. Not very straight forward. - I could make the dot bigger 🤷‍♂️. I am tired now.
 - I took days between working on this and doing something else. A lot happens in December and by the time I return to work on this, I kinda forgot what is going on 😂😂.
 
 ### Sources:
